@@ -2,7 +2,7 @@ package com.hrdata.demo.util;
 
 import lombok.Getter;
 
-
+//liyac
 public enum PersonType {
     /**
      * 0	ZZ	在职
