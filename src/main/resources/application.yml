@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:log4jdbc:mysql://localhost:3306/cma-hr-all?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+  jpa:
+    database: mysql
+    show-sql: true
+  data:
+    mongodb:
+      uri:  mongodb://root:123@localhost:27017
+      database: test
