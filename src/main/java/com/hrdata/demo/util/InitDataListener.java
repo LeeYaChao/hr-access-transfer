@@ -15,6 +15,10 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
     private static final Logger LOG = LoggerFactory.getLogger(InitDataListener.class);
 
     public  static List<String> personTypeList = new ArrayList<>();
+
+    public static List<String> setList = new ArrayList<>();
+
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try {
