@@ -2,11 +2,14 @@ package com.hrdata.demo.service;
 
 import com.hrdata.demo.entity.PolStaSet;
 import com.hrdata.demo.repository.PolStaSetRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +22,8 @@ import java.util.List;
  * @author liyachao (liyac@mail.taiji.com.cn)
  * @version 1.0
  */
+@Service
+@Slf4j
 public class PolStaSetService {
 
 
@@ -33,6 +38,29 @@ public class PolStaSetService {
             return true;
         }else{
             return false;
+        }
+    }
+
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<PolStaSet> polStaSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            polStaSets = this.changeToMysql(polStaSets,rst,personType);
+            if(count==100){
+                this.save(polStaSets);
+                polStaSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(polStaSets);
         }
     }
 

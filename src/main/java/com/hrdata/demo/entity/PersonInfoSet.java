@@ -8,11 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "tb_set_person_info")
-public class PersonInfoSet {
+public class PersonInfoSet implements Serializable{
 
 	public PersonInfoSet() {
 	}

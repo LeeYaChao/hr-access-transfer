@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="tb_set_edu_deg")
-public class EduDegSet implements Serializable {
+public class EduDegSet implements Serializable{
 
     @Id
     @Getter

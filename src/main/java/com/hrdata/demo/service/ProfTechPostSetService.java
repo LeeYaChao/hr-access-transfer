@@ -1,5 +1,6 @@
 package com.hrdata.demo.service;
 
+import com.hrdata.demo.entity.PositionManageSet;
 import com.hrdata.demo.entity.ProfTechPostSet;
 import com.hrdata.demo.repository.ProfTechPostSetRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +39,28 @@ public class ProfTechPostSetService {
             return false;
         }
     }
-
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<ProfTechPostSet> profTechPostSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            profTechPostSets = this.changeToMysql(profTechPostSets,rst,personType);
+            if(count==100){
+                this.save(profTechPostSets);
+                profTechPostSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(profTechPostSets);
+        }
+    }
 
     /**
      * 专业技术职务子集
