@@ -1,6 +1,7 @@
 package com.hrdata.demo.service;
 
 import com.hrdata.demo.entity.AdmPostSet;
+import com.hrdata.demo.entity.PersonInfoSet;
 import com.hrdata.demo.repository.AdmPostSetRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +40,28 @@ public class AdmPostSetService {
         }
     }
 
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<AdmPostSet> admPostSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            admPostSets = this.changeToMysql(admPostSets,rst,personType);
+            if(count==100){
+                this.save(admPostSets);
+                admPostSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(admPostSets);
+        }
+    }
 
     /**
      * TB_SET_ADM_POST

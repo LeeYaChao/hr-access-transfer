@@ -1,21 +1,23 @@
 package com.hrdata.demo.service;
 
-import com.hrdata.demo.entity.*;
-import com.hrdata.demo.repository.*;
+import com.hrdata.demo.entity.PersonInfoSet;
+import com.hrdata.demo.repository.PersonSetRepository;
+import com.hrdata.demo.util.AccessDbConnection;
+import com.hrdata.demo.util.InitDataListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @Slf4j
-@Service
-public class PersonAllService {
+@Component
+public class PersonAllService{
 
 
     @Autowired
@@ -31,6 +33,30 @@ public class PersonAllService {
             return false;
         }
 
+    }
+
+
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<PersonInfoSet> personInfoSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            personInfoSets = this.changeToMysql(personInfoSets,rst,personType);
+            if(count==100){
+                this.save(personInfoSets);
+                personInfoSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(personInfoSets);
+        }
     }
 
 
@@ -98,5 +124,6 @@ public class PersonAllService {
         return personInfoSets;
     }
 
+    }
 
-}
+

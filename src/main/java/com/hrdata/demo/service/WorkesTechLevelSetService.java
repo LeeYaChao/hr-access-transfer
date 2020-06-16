@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,30 @@ public class WorkesTechLevelSetService {
             return false;
         }
     }
+
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<WorkesTechLevelSet> workesTechLevelSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            workesTechLevelSets = this.changeToMysql(workesTechLevelSets,rst,personType);
+            if(count==100){
+                this.save(workesTechLevelSets);
+                workesTechLevelSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(workesTechLevelSets);
+        }
+    }
+
     /**
      * 工人技术等级子集
      * @param workesTechLevelSets

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,30 @@ public class PositionManageSetService {
             return true;
         }else{
             return false;
+        }
+    }
+
+
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<PositionManageSet> positionManageSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            positionManageSets = this.changeToMysql(positionManageSets,rst,personType);
+            if(count==100){
+                this.save(positionManageSets);
+                positionManageSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(positionManageSets);
         }
     }
 

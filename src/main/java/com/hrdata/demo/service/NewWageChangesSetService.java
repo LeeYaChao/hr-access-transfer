@@ -1,5 +1,6 @@
 package com.hrdata.demo.service;
 
+import com.hrdata.demo.entity.EduDegSet;
 import com.hrdata.demo.entity.NewWageChangesSet;
 import com.hrdata.demo.repository.NewWageChangesSetRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,28 @@ public class NewWageChangesSetService {
         }
     }
 
+    /**
+     * 根据access库结果集执行插入mysql
+     * @param rst
+     * @param personType
+     * @throws SQLException
+     */
+    public void execute(ResultSet rst,String personType) throws SQLException {
+        int count = 0;
+        List<NewWageChangesSet> newWageChangesSets = new ArrayList<>();
+        while (rst.next()){
+            count++;
+            newWageChangesSets = this.changeToMysql(newWageChangesSets,rst,personType);
+            if(count==100){
+                this.save(newWageChangesSets);
+                newWageChangesSets.clear();
+                count=0;
+            }
+        }
+        if(count>0){
+            this.save(newWageChangesSets);
+        }
+    }
 
     /**
      * TB_SET_NEW_WAGE_CHANGES

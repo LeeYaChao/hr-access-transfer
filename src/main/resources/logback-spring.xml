@@ -33,7 +33,7 @@
         <!-- 添加附加的appender,最多只能添加一个 -->
         <appender-ref ref="FILE"/>
     </appender>
-    <appender name="MONGODB" class="com.hrdata.demo.util.MongoDBAppender"/>
+<!--    <appender name="MONGODB" class="com.hrdata.demo.util.MongoDBAppender"/>-->
 
 
   <!--  <logger name="org.apache.ibatis.cache.decorators.LoggingCache" level="DEBUG" additivity="false">
@@ -43,7 +43,7 @@
     <!-- 1. 输出SQL 到控制台和文件-->
     <logger name="org.springframework.boot" additivity="false" >
         <level value="INFO" />
-        <appender-ref ref="MONGODB"/>
+<!--        <appender-ref ref="MONGODB"/>-->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
@@ -56,7 +56,7 @@
     </logger>-->
     <root level="INFO">
         <!--<appender-ref ref="ASYNC"/>-->
-        <appender-ref ref="MONGODB"/>
+<!--        <appender-ref ref="MONGODB"/>-->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="tb_set_adm_post")
-public class AdmPostSet implements Serializable {
+public class AdmPostSet implements Serializable{
 
     @Id
     @Getter
